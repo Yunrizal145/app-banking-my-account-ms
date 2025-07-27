@@ -13,18 +13,27 @@
 	<version>0.0.4-SNAPSHOT</version>
 	<name>my-account-management-service</name>
 	<description>my account management service for banking</description>
-	<url/>
+	<url>https://github.com/Yunrizal145/app-banking-my-account-ms</url>
+
 	<licenses>
-		<license/>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
 	</licenses>
+
 	<developers>
-		<developer/>
+		<developer>
+			<id>yunrizal</id>
+			<name>Hamad Yunrizal</name>
+		</developer>
 	</developers>
+
 	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
+		<connection>scm:git:https://github.com/Yunrizal145/app-banking-user-ms.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com:Yunrizal145/app-banking-my-account-ms.git</developerConnection>
+		<url>https://github.com/Yunrizal145/app-banking-my-account-ms</url>
+		<tag>HEAD</tag>
 	</scm>
 	<properties>
 		<java.version>11</java.version>
@@ -99,27 +108,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<repositories>
-		<repository>
-			<id>central</id>
-			<name>Maven Central Repository</name>
-			<url>https://repo.maven.apache.org/maven2</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-
-	<distributionManagement>
-		<repository>
-			<id>github-my-account-ms</id>
-			<name>GitHub Packages</name>
-			<url>https://maven.pkg.github.com/Yunrizal145/app-banking-my-account-ms</url>
-		</repository>
-	</distributionManagement>
 
 </project>
