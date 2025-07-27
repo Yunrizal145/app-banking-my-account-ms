@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface AccountUserRepository extends JpaRepository<AccountUser, Long> {
 
     Optional<AccountUser> findByAccountNumberAndIsDeleted(String accountNumber, boolean isDeleted);
+    Optional<AccountUser> findByUserProfileIdAndIsDeleted(Long userProfileId, boolean isDeleted);
 }

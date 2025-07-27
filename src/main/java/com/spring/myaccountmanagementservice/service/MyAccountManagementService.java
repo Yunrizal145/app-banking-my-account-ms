@@ -1,14 +1,19 @@
 package com.spring.myaccountmanagementservice.service;
 
+import com.spring.myaccountmanagementservice.AccountTypeEnum;
+import com.spring.myaccountmanagementservice.dto.AccountUserDto;
 import com.spring.myaccountmanagementservice.dto.GetMutasiByAccountNumberRequest;
 import com.spring.myaccountmanagementservice.dto.GetMutasiByAccountNumberResponse;
 import com.spring.myaccountmanagementservice.dto.GetSaldoByAccountNumberRequest;
 import com.spring.myaccountmanagementservice.dto.GetSaldoByAccountNumberResponse;
 import com.spring.myaccountmanagementservice.dto.MutationDto;
+import com.spring.myaccountmanagementservice.dto.SaveAccountUserResponse;
+import com.spring.myaccountmanagementservice.dto.SaveUserAccountRequest;
 import com.spring.myaccountmanagementservice.model.AccountUser;
 import com.spring.myaccountmanagementservice.model.Mutation;
 import com.spring.myaccountmanagementservice.repository.AccountUserRepository;
 import com.spring.myaccountmanagementservice.repository.MutationRepository;
+import com.spring.myaccountmanagementservice.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -101,6 +106,55 @@ public class MyAccountManagementService {
                     .build();
         } catch (Exception e) {
             throw new RuntimeException("Check Mutasi Failed");
+        }
+    }
+
+    public AccountUser getAccountUser(GetMutasiByAccountNumberRequest request) {
+        log.info("get account user by user profile id");
+        try {
+            var accountUser = accountUserRepository.findByUserProfileIdAndIsDeleted(request.getUserProfileId(), false);
+            if (accountUser.isPresent()) {
+                return accountUser.get();
+            }
+            return AccountUser.builder().build();
+        } catch (Exception e) {
+            throw new RuntimeException("Get Account User Failed");
+        }
+    }
+
+    public SaveAccountUserResponse saveAccountUser(SaveUserAccountRequest request){
+        log.info("start saveAccountUser ... ");
+        Boolean isSuccess = Boolean.FALSE;
+        try {
+            var saveDataUserAccount = AccountUser.builder()
+                    .userProfileId(request.getUserProfileId())
+                    .accountType(AccountTypeEnum.TABUNGAN.name())
+                    .accountNumber(StringUtils.generatedUniqueAccountNumber())
+                    .balance(BigDecimal.ZERO)
+                    .currency("IDR")
+                    .createdAt(new Date())
+                    .isDeleted(false)
+                    .build();
+
+            // Save Account User
+            log.info("req data for save to account user: {}", saveDataUserAccount);
+            var accountUser = accountUserRepository.save(saveDataUserAccount);
+            log.info("save data success");
+            isSuccess = Boolean.TRUE;
+
+            return SaveAccountUserResponse.builder()
+                    .accountUserDto(AccountUserDto.builder()
+                            .accountNumber(accountUser.getAccountNumber())
+                            .balance(accountUser.getBalance())
+                            .currency(accountUser.getCurrency())
+                            .accountType(accountUser.getAccountType())
+                            .createdAt(accountUser.getCreatedAt())
+                            .build())
+                    .message("Data Berhasil Ditambahkan")
+                    .isSuccess(isSuccess)
+                    .build();
+        } catch (Exception e) {
+            throw new RuntimeException("Error when save account user");
         }
     }
 }

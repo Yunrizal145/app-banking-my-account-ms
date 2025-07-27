@@ -1,0 +1,1 @@
+web: java -jar target/my-account-management-service-0.0.1-SNAPSHOT.jar
