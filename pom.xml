@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.spring</groupId>
 	<artifactId>my-account-management-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>my-account-management-service</name>
 	<description>my account management service for banking</description>
 	<url/>
@@ -116,7 +116,7 @@
 
 	<distributionManagement>
 		<repository>
-			<id>github</id>
+			<id>github-my-account-ms</id>
 			<name>GitHub Packages</name>
 			<url>https://maven.pkg.github.com/Yunrizal145/app-banking-my-account-ms</url>
 		</repository>
