@@ -12,7 +12,7 @@
 	<artifactId>my-account-management-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>my-account-management-service</name>
-	<description>user management service for banking</description>
+	<description>my account management service for banking</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -113,5 +113,13 @@
 			</snapshots>
 		</repository>
 	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub Packages</name>
+			<url>https://maven.pkg.github.com/Yunrizal145/app-banking-my-account-ms</url>
+		</repository>
+	</distributionManagement>
 
 </project>
