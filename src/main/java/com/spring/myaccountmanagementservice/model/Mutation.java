@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
-@Table(name = "account_user", schema = "my_account_management_service")
+@Table(name = "mutation", schema = "my_account_management_service")
 @Data
 @Builder
 @AllArgsConstructor

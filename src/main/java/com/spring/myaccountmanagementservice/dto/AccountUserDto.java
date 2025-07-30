@@ -21,5 +21,6 @@ public class AccountUserDto implements Serializable {
     private BigDecimal balance;
     private String currency;
     private Date createdAt;
+    private String description;
 
 }

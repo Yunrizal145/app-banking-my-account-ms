@@ -34,38 +34,38 @@ public class MyAccountManagementService {
     @Autowired
     private MutationRepository mutationRepository;
 
-    public boolean checkUserBalance(String account, BigDecimal amount) {
-        return accountUserRepository.findByAccountNumberAndIsDeleted(account, false)
-                .map(a -> a.getBalance().compareTo(amount)!=0)
+    public boolean checkUserBalance(AccountUserDto accountUserDto) {
+        return accountUserRepository.findByAccountNumberAndIsDeleted(accountUserDto.getAccountNumber(), false)
+                .map(a -> a.getBalance().compareTo(accountUserDto.getBalance())!=0)
                 .orElse(false);
     }
 
-    public void deductBalanceAndRecordMutation(String account, BigDecimal amount, String description) {
-        AccountUser acc = accountUserRepository.findByAccountNumberAndIsDeleted(account, false).orElseThrow();
-        acc.setBalance(acc.getBalance().subtract(amount));
+    public void deductBalanceAndRecordMutation(AccountUserDto accountUserDto) {
+        AccountUser acc = accountUserRepository.findByAccountNumberAndIsDeleted(accountUserDto.getAccountNumber(), false).orElseThrow();
+        acc.setBalance(acc.getBalance().subtract(accountUserDto.getBalance()));
         accountUserRepository.save(acc);
 
         Mutation mutation = new Mutation();
-        mutation.setAccountNumber(account);
+        mutation.setAccountNumber(accountUserDto.getAccountNumber());
         mutation.setType("DEBIT");
-        mutation.setAmount(amount);
-        mutation.setDescription(description);
+        mutation.setAmount(accountUserDto.getBalance());
+        mutation.setDescription(accountUserDto.getDescription());
         mutation.setCreatedAt(new Date());
         mutationRepository.save(mutation);
     }
 
     // Add Saldo User
-    public void creditBalanceAndRecordMutation(String account, BigDecimal amount, String description) {
-        AccountUser acc = accountUserRepository.findByAccountNumberAndIsDeleted(account, false).orElseThrow();
+    public void creditBalanceAndRecordMutation(AccountUserDto accountUserDto) {
+        AccountUser acc = accountUserRepository.findByAccountNumberAndIsDeleted(accountUserDto.getAccountNumber(), false).orElseThrow();
         log.info("");
-        acc.setBalance(acc.getBalance().add(amount));
+        acc.setBalance(acc.getBalance().add(accountUserDto.getBalance()));
         accountUserRepository.save(acc);
 
         Mutation mutation = new Mutation();
-        mutation.setAccountNumber(account);
+        mutation.setAccountNumber(accountUserDto.getAccountNumber());
         mutation.setType("CREDIT");
-        mutation.setAmount(amount);
-        mutation.setDescription(description);
+        mutation.setAmount(accountUserDto.getBalance());
+        mutation.setDescription(accountUserDto.getDescription());
         mutation.setCreatedAt(new Date());
         mutationRepository.save(mutation);
     }
@@ -122,6 +122,19 @@ public class MyAccountManagementService {
         }
     }
 
+    public AccountUser getAccountUserByAccountNumber(GetMutasiByAccountNumberRequest request) {
+        log.info("get account user by account number");
+        try {
+            var accountUser = accountUserRepository.findByAccountNumberAndIsDeleted(request.getAccountNumber(), false);
+            if (accountUser.isPresent()) {
+                return accountUser.get();
+            }
+            return AccountUser.builder().build();
+        } catch (Exception e) {
+            throw new RuntimeException("Get Account User Failed");
+        }
+    }
+
     public SaveAccountUserResponse saveAccountUser(SaveUserAccountRequest request){
         log.info("start saveAccountUser ... ");
         Boolean isSuccess = Boolean.FALSE;
@@ -156,5 +169,17 @@ public class MyAccountManagementService {
         } catch (Exception e) {
             throw new RuntimeException("Error when save account user");
         }
+    }
+
+    public void updateBalance(AccountUserDto accountUserDto){
+        log.info("start updateBalance");
+        log.info("start updateBalance req : {}", accountUserDto);
+        int rowsUpdated = accountUserRepository.updateAccountBalance(accountUserDto.getAccountNumber(), accountUserDto.getBalance());
+        if (rowsUpdated > 0) {
+            log.info("Update balance berhasil");
+        } else {
+            log.info("Data tidak ditemukan atau tidak diubah");
+        }
+
     }
 }

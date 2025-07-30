@@ -1,5 +1,6 @@
 package com.spring.myaccountmanagementservice.controller;
 
+import com.spring.myaccountmanagementservice.dto.AccountUserDto;
 import com.spring.myaccountmanagementservice.dto.GetMutasiByAccountNumberRequest;
 import com.spring.myaccountmanagementservice.dto.GetMutasiByAccountNumberResponse;
 import com.spring.myaccountmanagementservice.dto.GetSaldoByAccountNumberRequest;
@@ -34,9 +35,34 @@ public class MyAccountManagementServiceController {
         return myAccountManagementService.getAccountUser(request);
     }
 
+    @PostMapping("/getaccountuserbyaccountnumber")
+    public AccountUser getAccountUserByAccountNumber(@RequestBody GetMutasiByAccountNumberRequest request){
+        return myAccountManagementService.getAccountUserByAccountNumber(request);
+    }
+
     @PostMapping("/saveaccountuser")
     public SaveAccountUserResponse saveAccountUser(@RequestBody SaveUserAccountRequest request){
         return myAccountManagementService.saveAccountUser(request);
+    }
+
+    @PostMapping("/updatebalance")
+    public void updateBalanceAccountUser(@RequestBody AccountUserDto request){
+        myAccountManagementService.updateBalance(request);
+    }
+
+    @PostMapping("/checkuserbalance")
+    public boolean checkUserBalance(@RequestBody AccountUserDto request){
+        return myAccountManagementService.checkUserBalance(request);
+    }
+
+    @PostMapping("/creditbalanceandrecordmutation")
+    public void creditBalanceAndRecordMutation(@RequestBody AccountUserDto request){
+        myAccountManagementService.creditBalanceAndRecordMutation(request);
+    }
+
+    @PostMapping("/deductbalanceandrecordmutation")
+    public void deductBalanceAndRecordMutation(@RequestBody AccountUserDto request){
+        myAccountManagementService.deductBalanceAndRecordMutation(request);
     }
 
 }
