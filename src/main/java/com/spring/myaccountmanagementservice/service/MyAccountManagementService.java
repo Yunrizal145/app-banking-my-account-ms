@@ -124,8 +124,10 @@ public class MyAccountManagementService {
 
     public AccountUser getAccountUserByAccountNumber(GetMutasiByAccountNumberRequest request) {
         log.info("get account user by account number");
+        log.info("get account user by account number req : {}", request);
         try {
             var accountUser = accountUserRepository.findByAccountNumberAndIsDeleted(request.getAccountNumber(), false);
+            log.info("accountUser data : {}", accountUser);
             if (accountUser.isPresent()) {
                 return accountUser.get();
             }
